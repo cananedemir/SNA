@@ -1,0 +1,63 @@
+---
+title: "Twitter Netzwerk FWerdau"
+author: "Canan Edemir"
+date: "12/11/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Die Daten beziehen sich auf den Twitter-Account der Fridays For Future in Werdau. Achtung: Wenn Sie die Daten von Crossfoam verwenden wollen, müssen Sie in der Edgelist source,target durch to,from ersetzen. Wenn Sie in der Nodelist handle durch name ersetzen, erhalten die Knoten ein Label.
+
+# Datensatz einlesen
+
+```{r Twitter Netzwerk Fridays For Future einlesen, fig.height=6, fig.width=10}
+
+library(igraph)
+
+# Einlesen der Edge- und Nodelist
+edges <- read.csv("https://raw.githubusercontent.com/cananedemir/SNA/main/Crossfoam/Crossfoam-FWerdau-edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/cananedemir/SNA/main/Crossfoam/crossfoam-FWerdau-nodes.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(edges)
+
+# Zusammenführen von Edge- und Nodelist als igraph-Objekt s
+fff <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+E(fff)$arrow.size <- .3
+
+plot(fff,
+		 aps=0,
+		 layout=layout_with_kk,
+		 main="Twitter-Netzwerk 'FWerdau'",
+		 sub="Stand: November 2022"
+)
+```
+
+### Teilnetzwerke erstellen
+
+Wir wollen nur Knoten, die mehr als 100.000 Follower haben
+
+```{r Followerselektion, fig.height=4, fig.width=6}
+
+list.vertex.attributes(fff)
+vertex.attributes(fff)$followers_count
+
+
+fff_follower <- delete_vertices(fff, V(fff)[followers_count < 100000]) 
+fff_follower
+vertex.attributes(fff_follower)$followers_count
+
+list.vertex.attributes(fff_follower)
+
+plot(fff_follower,
+		 aps=0,
+		 layout=layout_with_kk,
+		 edge.arrow.size=.4,
+		 vertex.size=degree(fff_follower)*3,
+		 main="Twitter-Netzwerk FWerdau",
+		 sub="Follower > 100.000"
+)
+```
