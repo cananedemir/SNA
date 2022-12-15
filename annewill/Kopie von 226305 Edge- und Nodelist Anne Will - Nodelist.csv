@@ -1,0 +1,31 @@
+id,name,party,sector,country
+UVDL,Ursula von der Leyen,CDU,1,1
+LK,Lars Klingbeil,SPD,1,1
+NR,Norbert Röttgen,CDU,1,1
+SW,Sahra Wagenknecht,Linke,1,1
+CS,Constanze Stelzenmüller,NA,2,1
+500,Folge 500,NA,NA,NA
+CL,Christian Lindner,FDP,1,1
+KS,Karl Schlögel,NA,3,3
+LM,Ljudmyla Melnyk,NA,4,2
+KD,Kristina Dunz,NA,2,1
+EL,Egils Levits,NA,1,4
+501,Folge 501,NA,NA,NA
+500,Folge 500,NA,NA,NA
+502,Folge 502,NA,NA,NA
+AB,Annalena Baerbock,Grüne,1,1
+FT,Frans Timmermans,NA,1,5
+AM,Andrij Melnyk,NA,1,2
+AGL,Alexander Graf Lambsdorff,FDP,1,1
+ER,Egon Ramms,NA,5,1
+503,Folge 503,NA,NA,NA
+RH,Robert Habeck,Grüne,1,1
+CM,Claudia Major,NA,1,1
+KP,Katja Petrowskaja,NA,2,1
+RK,Roderich Kiesewetter,CDU,1,1
+,,,,
+CDU,Christlich Demokratische Union,NA,1,1
+SPD,Sozoialdemokratische Partei Deutschland,NA,1,1
+Linke,Die Linke,NA,1,1
+Grüne,Bündnis 90/Die Grüne,NA,1,1
+FDP,Freie Demokratische Partei,NA,1,1
