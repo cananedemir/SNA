@@ -13,15 +13,24 @@ from:ID des Knoten Person
 to: ID des Knoten Verbindung
 
 relation:
+
 1=(ehem.) Mitglied/Unterstützer/Angestellter
+
 2=Teilnehmer
+
 3=ehem. liiert
+
 4=Kolleg*innen
+
 5=Bekannte/gleiche Ziele
 
 
 Nodelist
+
 id = ID aus der Edgelist
+
 name = Voller Name/Bezeichnung
+
 type = 1 als Person, 2 als Organisation bzw. Event
+
 sector = welchem gesellschaftlichen Teilsystem die Person oder Organisation zuzuordnen ist (z.B. Wirtschaft, Militär, Religion, Politik, Adel, etc.)
