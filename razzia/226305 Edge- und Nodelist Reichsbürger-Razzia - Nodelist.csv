@@ -1,0 +1,26 @@
+id,name,type,sector
+HPR,Heinrich Prinz Reuß,1,Adel
+FH,Frank Heppner,1,Prominenz
+MF,Michael Fritsch,1,Polizei
+ME,Maximilian Eder,1,Militär
+CW,Christian Wendler,1,Handwerk
+RHL,Ruth Hildegard Leiding,1,Spiritualität
+RP,Rüdiger von Pescatore,1,Militär
+PG,Paul G,1,Recht
+MH,Marco van H,1,Militär
+MR,Melanie R,1,Medizin
+PW,Peter Wörner,1,Militär
+BMW,Birgit Malsack-Winkemann,1,Politik
+RR,Rene R,1,Kultur
+AM,Andreas M,1,Militär
+TT,Thomas T,1,Handwerk
+Polizei,Polizei Hannover,2,Polizei
+Telegram,Telegram,2,Verschwörung
+Coronademo,Coronaproteste/Querdenker,2,Verschwörung
+Basis,Die Basis Niedersachsen,2,Politik
+Bundeswehr,Bundeswehr Deutschland,2,Militär
+KSK,Kommando Spezialkräfte,2,Militär
+QAnon,QAnon,2,Verschwörung
+Ahrtal,Querdenker bei Flutkatastrophe,2,Verschwörung
+AfD,Alternative für Deutschland,2,Politik
+VerPat,Vereinte Patrioten,2,Verschwörung
