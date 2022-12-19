@@ -1,0 +1,155 @@
+---
+title: "Testat"
+subtitle: "Verbindungen innerhalb der Reichsbürger Razzia"
+author: "Canan Edemir"
+date: '2022-12-17'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE,
+	include = FALSE)
+library(igraph)
+```
+
+# Vorbereitung Testat
+
+## Daten und Codebuch
+
+Die Daten und das Codebuch sind in meinem
+[Github-Account](https://github.com/cananedemir/SNA/tree/main/razzia)
+hinterlegt. Erhoben wurden die führenden Personen, die bei der Reichsbürger-Razzia verhaftet wurden und ihre Verbindungen zu anderen Personen und Organisationen. Quellen: https://taz.de/Razzia-gegen-Reichsbuerger/!5898636/ https://www.belltower.news/update-reichsbuerger-razzien-das-breite-netzwerk-der-revolutionsbereiten-reichsbuergerinnen-144131/
+
+Grundregeln für die IDs: keine Sonderzeichen, keine Leerzeichen, etc.
+IDs werden über die Initialen der Personen kleingeschrieben oder die
+gängigen Abkürzungen für Parteien oder Organisationen festgelegt. Die
+Sendungen können über die laufende Nummer oder das Datum der Sendung und
+Titel codiert werden.
+
+**Grundregeln:**
+
+-   keine Leer- oder Sonderzeichen in IDs: möglichst einfache IDs
+    wählen, um Fehler zu vermeiden). Alle IDs der Edgelist müssen ein
+    Mal in der Nodelist mit genau der gleichen ID stehen, egal wie oft
+    sie in der Edgelist stehen und egal, ob sie in der from oder to
+    Spalte stehen.
+
+-   keine Leerzeichen auf github (Datei bei oder nach Download
+    umbenennen in edges.csv oder nodes.csv, um Fehler zu vermeiden).
+
+-   Vor Beginn der Analyse: löschen Sie Ihr Environment in RStudio: wenn
+    dort noch alte Daten und Variablen liegen, kann das zu Fehlern in
+    den internen Bezügen führen. R muss ab und an neu gestartet werden
+    (Restart R and run all chunks)
+
+-   Codebuch vorher überlegen und auf github und im Dokument
+    dokumentieren.
+
+-   Wenn Sie ihr eigenes Netzwerk erstellen, geben Sie dem Netzwerk eine
+    neue Bezeichnung, um Fehler zu vermeiden.
+
+-   Typische Fehlermeldungen: \
+    - duplicate vertices: In der Nodelist sind IDs doppelt angelegt. \
+    - Edges and vertices do not match: eine ID fehlt entweder in der
+    Edge- oder Nodelist
+
+-   Typischer Fehlerquellen: es werden Leerzeichen reinkopiert, Groß-
+    und Kleinschreibung nicht beachtet oder Sonderzeichen bei den IDs
+    verwendet.
+
+```{r Netzwerk einlesen}
+# Programmbibliothek laden
+library(igraph)
+
+# Einlesen der Edge- und Nodelist
+edges <- read.csv("https://raw.githubusercontent.com/cananedemir/SNA/main/razzia/edges.csv", header=T, as.is=T, sep = ",")
+
+nodes <- read.csv("https://raw.githubusercontent.com/cananedemir/SNA/main/razzia/nodes.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(edges)
+
+# Zusammenführen von Edge- und Nodelist als igraph-Objekt rr
+rr <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+
+rr
+```
+
+## Datensatz vorbereiten
+
+```{r Netzwerk analysieren, fig.height=6, fig.width=9}
+
+# Visualisierung als Two-Mode-Netzwerk nach Personen und Organisationen/Events
+
+list.edge.attributes(rr)
+V(rr)[V(rr)$type == 1]$shape <- "circle" # Person
+V(rr)[V(rr)$type == 2]$shape <- "square" # Organisation o.Event
+
+
+plot(rr,
+     asp=0,
+     vertex.size=5,
+     vertex.label.cex=1,
+     vertex.color="orange",
+     vertex.frame.color="orange",
+     edge.arrow.size=0.5,
+     layout=layout_with_kk,
+     main="Netzwerk der bei der Razzia verhafteten Reichsbürger",
+     sub="Kreis = Person, Quadrat = Organisation/Event")
+
+rr
+
+
+
+```
+
+
+```{r Netzwerk analysieren, fig.height=6, fig.width=9}
+
+# Attribute anzeigen lassen
+list.vertex.attributes(rr)
+list.edge.attributes(rr)
+
+# Farben festlegen für die gesellschaftlichen Sektoren
+# vertex.attributes(rr)$sector
+# colors()
+
+# Farben für Vertex-Attribut "sector" festlegen
+V(rr)[V(rr)$sector == "Adel"]$color <- "blue"
+V(rr)[V(rr)$sector == "Prominenz"]$color <- "pink"
+V(rr)[V(rr)$sector == "Polizei"]$color <- "red"
+V(rr)[V(rr)$sector == "Militär"]$color <- "green"
+V(rr)[V(rr)$sector == "Politik"]$color <- "lightblue"
+V(rr)[V(rr)$sector == "Verschwörung"]$color <- "purple"
+V(rr)[V(rr)$sector == "Spiritualität"]$color <- "yellow"
+V(rr)[V(rr)$sector == "Handwerk"]$color <- "grey"
+V(rr)[V(rr)$sector == "Kultur"]$color <- "orange"
+V(rr)[V(rr)$sector == "Recht"]$color <- "brown"
+
+plot(rr,
+     asp=0,
+     vertex.size=5,
+     edge.arrow.size=0.5,
+     rescale=TRUE,
+     layout=layout_with_kk,
+     main="Netzwerk der beteiligten Personen/Organisationen",
+     sub="Visualisierung nach gesellschaftlichem Sektor")
+
+```
+## Fragen:
+
+1) Wie interpretieren Sie das erstellte Netzwerk? Wieviel Zeit haben Sie dafür benötigt (ohne Fehlerkorrektur sollte das in maximal ein bis drei Stunden machbar sein)?
+
+In dem Netzwerk ist deutlich zu sehen, dass viele der bei der Reichsbürger-Razzia festgenommenen Personen aus dem Militärsektor kommen oder zumindest Verbindungen dorthin pflegen. Außerdem ist der Kontakt in die Politik, insbesondere zur AfD-Partei sowie in das Spektrum der Coronaleugner und Verschwörungstheoretiker auffällig. Diese Sektoren fungieren offenbar als Bindungsglied zwischen den verschiedenen Knoten. Außerhalb dessen haben sie kaum oder keine (bekannten) Vernetzungen untereinander.Als einer der führenden Köpfe lässt sich dennoch Maximilian Eder herausstellen. Für die Erhebung der Daten habe ich ungefähr 1-2 Stunden gebraucht, für die Erstellung und Visualisierung des Netzwerks ca. 1 Stunde.
+
+
+2) Was war Ihr grösster Lernerfolg der Veranstaltung?
+
+Tatsächlich hat mir die Erhebung und Visualsierung realer, relevanter Netzwerke, wie zum Beispiel das der Razzia, am meisten Spaß gemacht. Dadurch konnte man echte Schlussfolgerungen für unsere Gesellschaft ziehen. Ich kann mir gut vorstellen, wie man sich diese Funktion im Journalismus zu Nutze machen kann, da es einen Überblick über große gesellschaftliche Phänomene bietet. 
+
+3) Welches Netzwerk möchten Sie gerne selbst untersuchen? Wenn Sie eine Tandem-Abgabe gemacht haben, bitte gerne zwei oder mehr Netzwerk-Ideen einreichen.
+
+Da ich vor Kurzem den Film "She Said" über den Harvey Weinstein-Skandal und die MeToo-Bewegung geschaut habe, würde mich ein Netzwerk über die Verbindungen interessieren, um das Machtmonopol zu veranschaulichen, welches sich Weinstein aufgebaut hat. Allerdings hat der Film auch gezeigt, wie viel Recherche nötig ist, bis alle relevanten und haltbaren Informationen vorliegen.
+
